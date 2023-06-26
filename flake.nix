@@ -1,9 +1,9 @@
 {
-  description = "Example JavaScript development environment for Zero to Nix";
+  description = "Nix development shell for logseq";
 
   # Flake inputs
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/release-23.05"; # also valid: "nixpkgs"
+    nixpkgs.url = "github:NixOS/nixpkgs/release-23.05";
   };
 
   # Flake outputs
@@ -21,7 +21,6 @@
       forAllSystems = f: nixpkgs.lib.genAttrs allSystems (system: f {
         pkgs = import nixpkgs {
           inherit system;
-          # overlays = [ nixgl.overlay ];
         };
       });
     in
@@ -32,7 +31,8 @@
           # The Nix packages provided in the environment
           packages = with pkgs; [
             babashka
-            clojure
+            jdk11
+            clojure  # Invoking `bb dev:lint` downloads its own clojure into ~/.m2 or something
             nodejs-18_x # Node.js 18, plus npm, npx, and corepack
             yarn
           ];
